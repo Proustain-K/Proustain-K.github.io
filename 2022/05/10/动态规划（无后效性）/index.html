@@ -1,0 +1,363 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>动态规划（无后效性） | 匡人日记</title><meta name="keywords" content="动态规划"><meta name="author" content="Proustian-K"><meta name="copyright" content="Proustian-K"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="一句话题解： 这是一道典型的使用「动态规划」解决的问题，需要我们掌握动态规划问题设计状态的技巧（无后效性），并且需要知道如何推导状态转移方程，最后再去优化空间。  方法一：动态规划  「力扣」第 53 题（最大子序和）是「力扣」第 124 题（二叉树的最大路径和）的线性版本，它们的状态设计思想和状态转移是类似的，希望大家能够通过本题题解进一步体会状态是如何想到的（即子问题的定义需要从哪些方面考虑）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="动态规划（无后效性）">
+<meta property="og:url" content="http://example.com/2022/05/10/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%88%E6%97%A0%E5%90%8E%E6%95%88%E6%80%A7%EF%BC%89/index.html">
+<meta property="og:site_name" content="匡人日记">
+<meta property="og:description" content="一句话题解： 这是一道典型的使用「动态规划」解决的问题，需要我们掌握动态规划问题设计状态的技巧（无后效性），并且需要知道如何推导状态转移方程，最后再去优化空间。  方法一：动态规划  「力扣」第 53 题（最大子序和）是「力扣」第 124 题（二叉树的最大路径和）的线性版本，它们的状态设计思想和状态转移是类似的，希望大家能够通过本题题解进一步体会状态是如何想到的（即子问题的定义需要从哪些方面考虑）">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/cover.jpg">
+<meta property="article:published_time" content="2022-05-10T12:32:30.000Z">
+<meta property="article:modified_time" content="2022-07-27T09:15:55.524Z">
+<meta property="article:author" content="Proustian-K">
+<meta property="article:tag" content="动态规划">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/cover.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2022/05/10/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%88%E6%97%A0%E5%90%8E%E6%95%88%E6%80%A7%EF%BC%89/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '动态规划（无后效性）',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2022-07-27 17:15:55'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.2.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">14</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/cover.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">匡人日记</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">动态规划（无后效性）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-05-10T12:32:30.000Z" title="发表于 2022-05-10 20:32:30">2022-05-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-07-27T09:15:55.524Z" title="更新于 2022-07-27 17:15:55">2022-07-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>11分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="动态规划（无后效性）"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p><strong>一句话题解：</strong></p>
+<p>这是一道典型的使用「动态规划」解决的问题，需要我们掌握动态规划问题设计状态的技巧（无后效性），并且需要知道如何推导状态转移方程，最后再去优化空间。</p>
+<blockquote>
+<p>方法一：动态规划</p>
+</blockquote>
+<p>「力扣」第 53 题（最大子序和）是「力扣」第 124 题（二叉树的最大路径和）的线性版本，它们的状态设计思想和状态转移是类似的，希望大家能够通过本题题解进一步体会状态是如何想到的（即子问题的定义需要从哪些方面考虑）。</p>
+<p>本题接的重点在「关键 1：理解题意」和「关键 2：如何定义子问题（如何定义状态）」和「最后再谈谈「无后效性」。</p>
+<p><strong>关键 1：理解题意</strong></p>
+<p>题目要我们找出和最大的连续子数组的值是多少，「连续」是关键字，连续很重要，不是子序列。</p>
+<p>题目只要求返回结果，不要求得到最大的连续子数组是哪一个。这样的问题通常可以使用「动态规划」解决。</p>
+<p><strong>关键 2：如何定义子问题（如何定义状态）</strong></p>
+<p>设计状态思路：把不确定的因素确定下来，进而把子问题定义清楚，把子问题定义得简单。动态规划的思想通过解决了一个一个简单的问题，进而把简单的问题的解组成了复杂的问题的解。</p>
+<p>友情提示：上面这句话大家姑且这么一看，脑子里有个印象，没有那么绝对。可能不同的人看会有不同的理解。如果我以后讲解的动态规划的设计思想与这里讲解的「设计状态思路」不一样的，我会再和大家说明。如果讲解有误导的地方，还请大家指出。，</p>
+<p>我们 不知道和最大的连续子数组一定会选哪一个数，那么我们可以求出 所有 经过输入数组的某一个数的连续子数组的最大和。</p>
+<p>例如，示例 1 输入数组是 [-2,1,-3,4,-1,2,1,-5,4] ，我们可以求出以下子问题：</p>
+<ul>
+<li>子问题 1：经过 -2−2 的连续子数组的最大和是多少；</li>
+<li>子问题 2：经过 11 的连续子数组的最大和是多少；</li>
+<li>子问题 3：经过 -3−3 的连续子数组的最大和是多少；</li>
+<li>子问题 4：经过 44 的连续子数组的最大和是多少；</li>
+<li>子问题 5：经过 -1−1 的连续子数组的最大和是多少；</li>
+<li>子问题 6：经过 22 的连续子数组的最大和是多少；</li>
+<li>子问题 7：经过 11 的连续子数组的最大和是多少；</li>
+<li>子问题 8：经过 -5−5 的连续子数组的最大和是多少；</li>
+<li>子问题 9：经过 44 的连续子数组的最大和是多少。</li>
+</ul>
+<p>一共 9 个子问题，这些子问题之间的联系并没有那么好看出来，这是因为 子问题的描述还有不确定的地方（这件事情叫做「有后效性」，我们在本文的最后会讲解什么是「无后效性」）。</p>
+<p>例如「子问题 3」：经过 -3−3 的连续子数组的最大和是多少。</p>
+<p>「经过 -3−3 的连续子数组」我们任意举出几个：</p>
+<ul>
+<li>[-2,1,-3,4] ，-3−3 是这个连续子数组的第 3 个元素；</li>
+<li>[1,-3,4,-1] ，-3−3 是这个连续子数组的第 2 个元素；<br>……</li>
+</ul>
+<p>我们不确定的是：-3−3 是连续子数组的第几个元素。那么我们就把 -3−3 定义成连续子数组的最后一个元素。在新的定义下，我们列出子问题如下：</p>
+<ul>
+<li>子问题 1：以 -2−2 结尾的连续子数组的最大和是多少；</li>
+<li>子问题 2：以 11 结尾的连续子数组的最大和是多少；</li>
+<li>子问题 3：以 -3−3 结尾的连续子数组的最大和是多少；</li>
+<li>子问题 4：以 44 结尾的连续子数组的最大和是多少；</li>
+<li>子问题 5：以 -1−1 结尾的连续子数组的最大和是多少；</li>
+<li>子问题 6：以 22 结尾的连续子数组的最大和是多少；</li>
+<li>子问题 7：以 11 结尾的连续子数组的最大和是多少；</li>
+<li>子问题 8：以 -5−5 结尾的连续子数组的最大和是多少；</li>
+<li>子问题 9：以 44 结尾的连续子数组的最大和是多少。</li>
+</ul>
+<p>我们加上了「结尾的」，这些子问题之间就有了联系。我们单独看子问题 1 和子问题 2：</p>
+<ul>
+<li>子问题 1：以 -2−2 结尾的连续子数组的最大和是多少；</li>
+</ul>
+<p>以 -2−2 结尾的连续子数组是 [-2]，因此最大和就是 -2−2。</p>
+<ul>
+<li>子问题 2：以 11 结尾的连续子数组的最大和是多少；</li>
+</ul>
+<p>以 11 结尾的连续子数组有 [-2,1] 和 [1] ，其中 [-2,1] 就是在「子问题 1」的后面加上 1 得到。-2 + 1 &#x3D; -1 &lt; 1−2+1&#x3D;−1&lt;1 ，因此「子问题 2」 的答案是 11。</p>
+<p>大家发现了吗，如果编号为 i 的子问题的结果是负数或者 00 ，那么编号为 i + 1 的子问题就可以把编号为 i 的子问题的结果舍弃掉（这里 i 为整数，最小值为 1 ，最大值为 8），这是因为：</p>
+<ul>
+<li>一个数 a 加上负数的结果比 a 更小；</li>
+<li>一个数 a 加上 00 的结果不会比 a 更大；</li>
+<li>而子问题的定义必须以一个数结尾，因此如果子问题 i 的结果是负数或者 00，那么子问题 i + 1 的答案就是以 nums[i] 结尾的那个数。</li>
+</ul>
+<blockquote>
+<p>因为我们把子问题定义的更清楚，子问题之间的联系就容易观察到。这是我们定义子问题、定义状态的经验。</p>
+</blockquote>
+<p>接下来我们按照编写动态规划题解的步骤，把「状态定义」「状态转移方程」「初始化」「输出」「是否可以空间优化」全都写出来。</p>
+<p><strong>定义状态（定义子问题）</strong><br>dp[i]：表示以 nums[i] 结尾 的 连续 子数组的最大和。</p>
+<p><strong>说明：</strong>「结尾」和「连续」是关键字。</p>
+<p><strong>状态转移方程（描述子问题之间的联系）</strong><br>根据状态的定义，由于 nums[i] 一定会被选取，并且以 nums[i] 结尾的连续子数组与以 nums[i - 1] 结尾的连续子数组只相差一个元素 nums[i] 。</p>
+<p>假设数组 nums 的值全都严格大于 0，那么一定有 dp[i] &#x3D; dp[i - 1] + nums[i]。</p>
+<p>可是 dp[i - 1] 有可能是负数，于是分类讨论：</p>
+<ul>
+<li>如果 dp[i - 1] &gt; 0，那么可以把 nums[i] 直接接在 dp[i - 1] 表示的那个数组的后面，得到和更大的连续子数组；</li>
+<li>如果 dp[i - 1] &lt;&#x3D; 0，那么 nums[i] 加上前面的数 dp[i - 1] 以后值不会变大。于是 dp[i] 「另起炉灶」，此时单独的一个 nums[i] 的值，就是 dp[i]。</li>
+</ul>
+<p>以上两种情况的最大值就是 dp[i] 的值，写出如下状态转移方程：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Proustian-K/img@main/img/image-20220727153354245.png" alt="image-20220727153354245"></p>
+<p>记为「状态转移方程 1」。</p>
+<p>状态转移方程还可以这样写，反正求的是最大值，也不用分类讨论了，就这两种情况，取最大即可，因此还可以写出状态转移方程如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Proustian-K/img@main/img/image-20220727153414506.png" alt="image-20220727153414506"></p>
+<p>记为「状态转移方程 2」。</p>
+<blockquote>
+<p>友情提示：求解动态规划的问题经常要分类讨论，这是因为动态规划的问题本来就有「最优子结构」的特点，即大问题的最优解通常由小问题的最优解得到。因此我们在设计子问题的时候，就需要把求解出所有子问题的结果，进而选出原问题的最优解。</p>
+</blockquote>
+<p><strong>思考初始值</strong><br>dp[0] 根据定义，只有 1 个数，一定以 nums[0] 结尾，因此 dp[0] &#x3D; nums[0]。</p>
+<p><strong>思考输出</strong><br>注意：</p>
+<ul>
+<li><p>这里状态的定义不是题目中的问题的定义，不能直接将最后一个状态返回回去；</p>
+</li>
+<li><p>这里状态的定义不是题目中的问题的定义，不能直接将最后一个状态返回回去；</p>
+</li>
+<li><p>这里状态的定义不是题目中的问题的定义，不能直接将最后一个状态返回回去。</p>
+</li>
+</ul>
+<p>重要的事情说三遍，有时候写东西写得多了，怕读者看不到重点，所以会想方设法进行强调，一句话翻来覆去反复说。我以前和一个在新东方当英语老师的朋友交流过，这样的效果最好。大家可以理解为职业病，我们更多是想要照顾到新手朋友们。大佬要是觉得我讲得啰嗦了，还请忽略。</p>
+<p>简单的动态规划问题，很有可能问的问题就可以设计成为子问题，复杂的动态规划问题就没有那么容易看出子问题应该如何设计了，这需要一定的解决问题的经验。</p>
+<p>这个问题的输出是把所有的 dp[0]、dp[1]、……、dp[n - 1] 都看一遍，取最大值。 同样的情况也适用于「力扣」第 300 题：「最长上升子序列」（以后我们有空，再把这道题拿出来再讲一遍，超级超级重要的一道动态规划问题）。</p>
+<p><strong>可以优化空间吗</strong><br>根据「状态转移方程」，dp[i] 的值只和 dp[i - 1] 有关，因此可以使用「滚动变量」的方式将代码进行优化。</p>
+<p>以下「参考代码 1」给出了不空间优化的代码，「参考代码 2」给出了空间优化的代码。</p>
+<p><strong>参考代码 1</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">maxSubArray</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">len</span> <span class="operator">=</span> nums.length;</span><br><span class="line">        <span class="comment">// dp[i] 表示：以 nums[i] 结尾的连续子数组的最大和</span></span><br><span class="line">        <span class="type">int</span>[] dp = <span class="keyword">new</span> <span class="title class_">int</span>[len];</span><br><span class="line">        dp[<span class="number">0</span>] = nums[<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt; len; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (dp[i - <span class="number">1</span>] &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                dp[i] = dp[i - <span class="number">1</span>] + nums[i];</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                dp[i] = nums[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 也可以在上面遍历的同时求出 res 的最大值，这里我们为了语义清晰分开写，大家可以自行选择</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">res</span> <span class="operator">=</span> dp[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt; len; i++) &#123;</span><br><span class="line">            res = Math.max(res, dp[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>时间复杂度</strong>：O(N) ，这里 N是输入数组的长度。</p>
+<p><strong>参考代码 2</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">maxSubArray</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">pre</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">res</span> <span class="operator">=</span> nums[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> num : nums) &#123;</span><br><span class="line">            pre = Math.max(pre + num, num);</span><br><span class="line">            res = Math.max(res, pre);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>时间复杂度</strong>：O(N) ，这里 N是输入数组的长度。</p>
+<blockquote>
+<p>这里再多说一点，如果是在 online judge 上写代码，我一般都不会写优化空间的代码，这是因为：</p>
+</blockquote>
+<ol>
+<li>一般的问题只要时间复杂度最优就可以；</li>
+<li>空间复杂度 online judge 并不在意，只要使用的空间不太离谱，不要一上来就 int[] dp &#x3D; new int[Integer.MAX_VALUE] 就好；</li>
+<li>优化空间的代码会丢失可读性，不好理解和向他人阐述。我自己写出来都困难，一般的流程是：先写一版不优化空间的代码，再写优化空间的代码。但是不优化空间的代码都可以通过系统测评了，我为什么还要写优化空间的代码呢？哈哈哈。</li>
+</ol>
+<p><strong>最后再谈谈「无后效性」</strong><br>「无后效性」是我多次提到的一个「动态规划」中非常重要的概念，在我看来，理解这个概念无比重要。很遗憾，《算法导论》上没有讲到「无后效性」。我找了一本在「豆瓣」目前豆瓣上评分为 9.2 的书 《算法竞赛进阶指南》，这本书和《算法导论》《算法 4》和 liuyubobobo 老师的算法课程一样，在我学习算法与数据结构的道路上，都发挥了巨大的作用。</p>
+<p>李煜东著《算法竞赛进阶指南》，摘录如下：</p>
+<blockquote>
+<p>为了保证计算子问题能够按照顺序、不重复地进行，动态规划要求已经求解的子问题不受后续阶段的影响。这个条件也被叫做「无后效性」。换言之，动态规划对状态空间的遍历构成一张有向无环图，遍历就是该有向无环图的一个拓扑序。有向无环图中的节点对应问题中的「状态」，图中的边则对应状态之间的「转移」，转移的选取就是动态规划中的「决策」。</p>
+</blockquote>
+<p>我的解释：</p>
+<ul>
+<li>「有向无环图」「拓扑序」表示了每一个子问题只求解一次，以后求解问题的过程不会修改以前求解的子问题的结果；</li>
+<li>换句话说：如果之前的阶段求解的子问题的结果包含了一些不确定的信息，导致了后面的阶段求解的子问题无法得到，或者很难得到，这叫「有后效性」，我们在当前这个问题第 1 次拆分的子问题就是「有后效性」的（大家可以再翻到上面再看看）；</li>
+<li>解决「有后效性」的办法是固定住需要分类讨论的地方，记录下更多的结果。在代码层面上表现为：<ul>
+<li>状态数组增加维度，例如：「力扣」的股票系列问题；</li>
+<li>把状态定义得更细致、准确，例如：前天推送的第 124 题：状态定义只解决路径来自左右子树的其中一个子树。</li>
+</ul>
+</li>
+</ul>
+<p><strong>总结</strong><br>「动态规划」的解法，我们先告诉大家，理解题意非常重要。其次，我们在做「动态规划」的问题的时候，需要经常思考 为什么想到需要这样定义状态。</p>
+<p>作者：liweiwei1419<br>链接：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/maximum-subarray/solution/dong-tai-gui-hua-fen-zhi-fa-python-dai-ma-java-dai/">https://leetcode.cn/problems/maximum-subarray/solution/dong-tai-gui-hua-fen-zhi-fa-python-dai-ma-java-dai/</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">Proustian-K</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/05/10/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%88%E6%97%A0%E5%90%8E%E6%95%88%E6%80%A7%EF%BC%89/">http://example.com/2022/05/10/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%88%E6%97%A0%E5%90%8E%E6%95%88%E6%80%A7%EF%BC%89/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">匡人日记</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">动态规划</a></div><div class="post_share"><div class="social-share" data-image="/img/cover.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/07/01/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/"><img class="prev-cover" src="/img/cover.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">背包问题</div></div></a></div><div class="next-post pull-right"><a href="/2022/05/06/%E5%9B%9E%E6%BA%AF(path%E5%8F%98%E9%87%8F)/"><img class="next-cover" src="/img/cover.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">回溯(path变量)</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Proustian-K</div><div class="author-info__description">祝你每天开心！</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">14</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Proustian-K"><i class="fab fa-github"></i><span>关注</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Proustian-K" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:xxxxxx@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的博客！🤨</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/07/27/%E4%BA%8C%E5%8F%89%E6%A0%91%E9%81%8D%E5%8E%86/" title="二叉树遍历"><img src="/img/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="二叉树遍历"/></a><div class="content"><a class="title" href="/2022/07/27/%E4%BA%8C%E5%8F%89%E6%A0%91%E9%81%8D%E5%8E%86/" title="二叉树遍历">二叉树遍历</a><time datetime="2022-07-27T11:23:04.000Z" title="发表于 2022-07-27 19:23:04">2022-07-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/01/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/" title="背包问题"><img src="/img/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="背包问题"/></a><div class="content"><a class="title" href="/2022/07/01/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/" title="背包问题">背包问题</a><time datetime="2022-07-01T06:03:20.000Z" title="发表于 2022-07-01 14:03:20">2022-07-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/05/10/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%88%E6%97%A0%E5%90%8E%E6%95%88%E6%80%A7%EF%BC%89/" title="动态规划（无后效性）"><img src="/img/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="动态规划（无后效性）"/></a><div class="content"><a class="title" href="/2022/05/10/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%88%E6%97%A0%E5%90%8E%E6%95%88%E6%80%A7%EF%BC%89/" title="动态规划（无后效性）">动态规划（无后效性）</a><time datetime="2022-05-10T12:32:30.000Z" title="发表于 2022-05-10 20:32:30">2022-05-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/05/06/%E5%9B%9E%E6%BA%AF(path%E5%8F%98%E9%87%8F)/" title="回溯(path变量)"><img src="/img/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="回溯(path变量)"/></a><div class="content"><a class="title" href="/2022/05/06/%E5%9B%9E%E6%BA%AF(path%E5%8F%98%E9%87%8F)/" title="回溯(path变量)">回溯(path变量)</a><time datetime="2022-05-06T14:38:20.000Z" title="发表于 2022-05-06 22:38:20">2022-05-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/04/25/%E5%9B%9E%E6%BA%AF%E5%85%A5%E9%97%A8/" title="回溯入门"><img src="/img/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="回溯入门"/></a><div class="content"><a class="title" href="/2022/04/25/%E5%9B%9E%E6%BA%AF%E5%85%A5%E9%97%A8/" title="回溯入门">回溯入门</a><time datetime="2022-04-25T14:38:20.000Z" title="发表于 2022-04-25 22:38:20">2022-04-25</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By Proustian-K</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
